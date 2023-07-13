@@ -1,17 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm,  AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .forms import PartyRegistrationForm
 
-# Displays the home page
 def home(request):
+    """
+    Displays the home page.
+    """
     return render(request, 'home.html')
 
-#handles reg
 def register(request):
- if request.method == 'POST':
+    """
+    Handles user registration.
+    """
+    if request.method == 'POST':
         form = PartyRegistrationForm(request.POST)
         if form.is_valid():
             form.save()  # Save the form data to the database
@@ -19,18 +23,23 @@ def register(request):
         else:
             form = PartyRegistrationForm()
         return render(request, 'registration.html', {'form': form})
-    
-# Renders the 'about' page
+
 def about(request):
+    """
+    Renders the 'about' page.
+    """
     return render(request, 'about.html')
 
-# Renders the 'leadership' page
 def leadership(request):
+    """
+    Renders the 'leadership' page.
+    """
     return render(request, 'leadership.html')
 
-# Handles user login
-
 def login_view(request):
+    """
+    Handles user login.
+    """
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -54,7 +63,9 @@ def login_view(request):
     
     return render(request, 'login.html', {'form': form})
 
-#blog view
 @login_required
 def blogs(request):
+    """
+    Renders the 'blogs' page.
+    """
     return render(request, 'blogs.html')

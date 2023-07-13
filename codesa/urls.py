@@ -16,9 +16,10 @@ urlpatterns = [
 
     # User login URL
     path('login/', views.login_view, name='login'),
-    
-    #to blogs
-    path('blogs/', views.blogs, name = 'blogs' ),
 
+    # Blogs URL
+    path('blogs/', views.blogs, name='blogs'),
+
+    # User login URL (alternate)
     path('accounts/login/', views.login_view, name='login'),
 ]

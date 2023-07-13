@@ -1,6 +1,9 @@
 from django import forms
 
 class PartyRegistrationForm(forms.Form):
+    """
+    Form for party registration.
+    """
     # Field for username
     username = forms.CharField(label='Username')
 
