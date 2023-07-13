@@ -1,0 +1,60 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm,  AuthenticationForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from .forms import PartyRegistrationForm
+
+# Displays the home page
+def home(request):
+    return render(request, 'home.html')
+
+#handles reg
+def register(request):
+ if request.method == 'POST':
+        form = PartyRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the form data to the database
+            return render(request, 'login.html')
+        else:
+            form = PartyRegistrationForm()
+        return render(request, 'registration.html', {'form': form})
+    
+# Renders the 'about' page
+def about(request):
+    return render(request, 'about.html')
+
+# Renders the 'leadership' page
+def leadership(request):
+    return render(request, 'leadership.html')
+
+# Handles user login
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            
+            # Authenticate user credentials
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                # Login the user
+                login(request, user)
+                
+                # Redirect the user to the "blogs" page
+                return redirect('blogs')  # Replace 'blogs' with the appropriate URL name
+            else:
+                error_message = 'Invalid username or password.'
+                return render(request, 'login.html', {'form': form, 'error_message': error_message})
+    else:
+        form = AuthenticationForm()
+    
+    return render(request, 'login.html', {'form': form})
+
+#blog view
+@login_required
+def blogs(request):
+    return render(request, 'blogs.html')
